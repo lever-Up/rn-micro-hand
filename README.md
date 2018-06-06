@@ -13,5 +13,3 @@ or
 
 react-native run-android
 ```
-# rn-micro-hand
-# rn-micro-hand
