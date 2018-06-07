@@ -7,7 +7,10 @@ import Router, { routerMiddleware } from './router'
 import appModel from './models/app'
 import routerModel from './models/router'
 
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'])
+YellowBox.ignoreWarnings([
+  'Warning: isMounted(...) is deprecated',
+  'Module RCTImageLoader',
+])
 
 const app = dva({
   initialState: {},

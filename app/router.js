@@ -5,7 +5,9 @@ import {
   TabNavigator,
   TabBarBottom,
   NavigationActions,
+  createBottomTabNavigator,
 } from 'react-navigation'
+
 import {
   initializeListeners,
   createReduxBoundAddListener,
@@ -15,23 +17,25 @@ import { connect } from 'react-redux'
 
 import Loading from './containers/Loading'
 import Login from './containers/Login'
-import Home from './containers/Home'
-import Account from './containers/Account'
+
 import Detail from './containers/Detail'
 
-const HomeNavigator = TabNavigator(
-  {
-    Home: { screen: Home },
-    Account: { screen: Account },
-  },
-  {
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
-    swipeEnabled: false,
-    animationEnabled: false,
-    lazyLoad: false,
-  }
-)
+import TabRouter from './TabRouter'
+
+const HomeNavigator = TabRouter
+// const HomeNavigator = TabNavigator(
+//   {
+//     Home: { screen: Home },
+//     Account: { screen: Account },
+//   },
+//   {
+//     tabBarComponent: TabBarBottom,
+//     tabBarPosition: 'bottom',
+//     swipeEnabled: false,
+//     animationEnabled: false,
+//     lazyLoad: false,
+//   }
+// )
 
 const MainNavigator = StackNavigator(
   {
@@ -49,7 +53,7 @@ const AppNavigator = StackNavigator(
     Login: { screen: Login },
   },
   {
-    headerMode: 'none',
+    // headerMode: 'none',
     mode: 'modal',
     navigationOptions: {
       gesturesEnabled: false,
