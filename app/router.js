@@ -1,45 +1,78 @@
 import React, { PureComponent } from 'react'
-import { BackHandler, Animated, Easing } from 'react-native'
+import { BackHandler, Animated, Easing, Image } from 'react-native'
 import {
-  StackNavigator,
-  TabNavigator,
-  TabBarBottom,
   NavigationActions,
-  createBottomTabNavigator,
+  createStackNavigator,
+  withNavigationFocus,
 } from 'react-navigation'
-
 import {
   initializeListeners,
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers'
 import { connect } from 'react-redux'
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 
 import Loading from './containers/Loading'
 import Login from './containers/Login'
-
 import Detail from './containers/Detail'
 
-import TabRouter from './TabRouter'
+import Home from './routes/Home'
+import Advertise from './routes/Advertise'
+import Promotion from './routes/Promotion'
+import Statistics from './routes/Statistics'
+import Account from './routes/Account'
 
-const HomeNavigator = TabRouter
-// const HomeNavigator = TabNavigator(
-//   {
-//     Home: { screen: Home },
-//     Account: { screen: Account },
-//   },
-//   {
-//     tabBarComponent: TabBarBottom,
-//     tabBarPosition: 'bottom',
-//     swipeEnabled: false,
-//     animationEnabled: false,
-//     lazyLoad: false,
-//   }
-// )
-
-const MainNavigator = StackNavigator(
+const tabNavigator = createMaterialBottomTabNavigator(
   {
-    HomeNavigator: { screen: HomeNavigator },
+    Home: { screen: withNavigationFocus(Home), routerName: 'Hh' },
+    Advertise: { screen: withNavigationFocus(Advertise) },
+    Promotion: { screen: withNavigationFocus(Promotion) },
+    Statistics: { screen: withNavigationFocus(Statistics) },
+    Account: { screen: withNavigationFocus(Account) },
+  },
+  {
+    shifting: false,
+    labeled: true,
+    activeTintColor: '#F44336',
+    inactiveTintColor: '#999',
+    initialRouteName: 'Home',
+    barStyle: {
+      backgroundColor: '#fff',
+      height: 55,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  }
+)
+tabNavigator.navigationOptions = ({ navigation }) => {
+  const { routeName } = navigation.state.routes[navigation.state.index]
+  let title
+  switch (routeName) {
+    case 'Home':
+      title = '首页'
+      break
+    case 'Advertise':
+      title = '编辑广告'
+      break
+    case 'Promotion':
+      title = '我要推广'
+      break
+    case 'Statistics':
+      title = '广告统计'
+      break
+    case 'Account':
+      title = '个人中心'
+      break
+  }
+  return {
+    title,
+  }
+}
+
+const MainNavigator = createStackNavigator(
+  {
+    HomeNavigator: { screen: tabNavigator },
     Detail: { screen: Detail },
   },
   {
@@ -47,7 +80,7 @@ const MainNavigator = StackNavigator(
   }
 )
 
-const AppNavigator = StackNavigator(
+const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },
     Login: { screen: Login },
