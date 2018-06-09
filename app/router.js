@@ -16,6 +16,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import Loading from './containers/Loading'
 import Login from './containers/Login'
 import Detail from './containers/Detail'
+import AdvertiseEditor from './containers/AdvertiseEditor'
 
 import Home from './routes/Home'
 import Advertise from './routes/Advertise'
@@ -36,7 +37,7 @@ const tabNavigator = createMaterialBottomTabNavigator(
     labeled: true,
     activeTintColor: '#F44336',
     inactiveTintColor: '#999',
-    initialRouteName: 'Home',
+    initialRouteName: 'Advertise',
     barStyle: {
       backgroundColor: '#fff',
       height: 55,
@@ -53,7 +54,7 @@ tabNavigator.navigationOptions = ({ navigation }) => {
       title = '首页'
       break
     case 'Advertise':
-      title = '编辑广告'
+      title = '广告管理'
       break
     case 'Promotion':
       title = '我要推广'
@@ -74,6 +75,7 @@ const MainNavigator = createStackNavigator(
   {
     HomeNavigator: { screen: tabNavigator },
     Detail: { screen: Detail },
+    AdvertiseEditor: { screen: AdvertiseEditor },
   },
   {
     headerMode: 'float',
@@ -86,7 +88,7 @@ const AppNavigator = createStackNavigator(
     Login: { screen: Login },
   },
   {
-    // headerMode: 'none',
+    headerMode: 'none',
     mode: 'modal',
     navigationOptions: {
       gesturesEnabled: false,
