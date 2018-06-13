@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { Icon, SwipeAction } from "antd-mobile";
+import { Icon, SwipeAction, Checkbox } from "antd-mobile";
 
 import Touchable from "./Touchable";
 
@@ -24,7 +24,7 @@ const right = [
   },
 ];
 
-export const AdvertiseCard = ({ img, position, linkType, clickTimes, showTimes, style, onPress }) => (
+export const AdvertiseCard = ({ img, position, linkType, clickTimes, showTimes, style, onPress, edit=false }) => (
   <SwipeAction
     autoClose
     style={{ backgroundColor: "transparent" }}
@@ -34,6 +34,16 @@ export const AdvertiseCard = ({ img, position, linkType, clickTimes, showTimes, 
   >
     <Touchable style={[styles.container, style]} onPress={onPress}>
       <View style={styles.card}>
+        {
+          edit?
+            <View style={styles.checkBox}>
+              <Checkbox
+                style={{ tintColor: '#f00', }}
+              />
+            </View>:
+            null
+        }
+
         <Image source={{ uri: img }} style={styles.img}></Image>
         <View>
           <View style={styles.textLine}>
@@ -59,11 +69,18 @@ const styles = StyleSheet.create({
     height: 120,
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingHorizontal: 20
   },
   card: {
     alignItems: "center",
     flexDirection: "row"
+  },
+  checkBox:{
+    width: 50,
+    height: '100%',
+    alignItems: "center",
+    justifyContent: "center"
   },
   img: {
     width: 170,
