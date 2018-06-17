@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { BackHandler, Animated, Easing, Image } from 'react-native'
+import { BackHandler, Animated, Easing, Image, Text } from 'react-native'
 import {
   NavigationActions,
   createStackNavigator,
@@ -12,10 +12,15 @@ import {
 } from 'react-navigation-redux-helpers'
 import { connect } from 'react-redux'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
+import {Icon} from 'antd-mobile'
+import {Touchable} from './components'
+import {HeaderButtons} from './components/HeaderButtons'
 
 import Loading from './containers/Loading'
 import Login from './containers/Login'
 import Detail from './containers/Detail'
+import AdvertiseEditor from './containers/AdvertiseEditor'
+import AdvertiseWeb from './containers/AdvertiseWeb'
 
 import Home from './routes/Home'
 import Advertise from './routes/Advertise'
@@ -36,7 +41,7 @@ const tabNavigator = createMaterialBottomTabNavigator(
     labeled: true,
     activeTintColor: '#F44336',
     inactiveTintColor: '#999',
-    initialRouteName: 'Home',
+    initialRouteName: 'Promotion',
     barStyle: {
       backgroundColor: '#fff',
       height: 55,
@@ -46,14 +51,26 @@ const tabNavigator = createMaterialBottomTabNavigator(
   }
 )
 tabNavigator.navigationOptions = ({ navigation }) => {
-  const { routeName } = navigation.state.routes[navigation.state.index]
+  const { routeName, params={} } = navigation.state.routes[navigation.state.index];
   let title
+  let headerRight = null;
   switch (routeName) {
     case 'Home':
       title = '首页'
       break
     case 'Advertise':
-      title = '编辑广告'
+      title = '广告管理';
+      const headerRightStyle = {height:50, width: 55, marginRight: 20, justifyContent: 'center', alignItems: 'center',};
+      headerRight = params.edit ? (
+        <HeaderButtons>
+          <HeaderButtons.Item title={'确定'} onPress={params.changeEdit}/>
+          <HeaderButtons.Item title={'取消'} onPress={params.changeEdit}/>
+        </HeaderButtons>
+      ):(
+        <Touchable style={headerRightStyle} onPress={params.changeFilter}>
+          <Icon type={'\uE663'}></Icon>
+        </Touchable>
+      );
       break
     case 'Promotion':
       title = '我要推广'
@@ -67,18 +84,21 @@ tabNavigator.navigationOptions = ({ navigation }) => {
   }
   return {
     title,
+    headerRight
   }
-}
+};
 
 const MainNavigator = createStackNavigator(
   {
     HomeNavigator: { screen: tabNavigator },
     Detail: { screen: Detail },
+    AdvertiseEditor: { screen: AdvertiseEditor },
+    AdvertiseWeb: { screen: AdvertiseWeb },
   },
   {
     headerMode: 'float',
   }
-)
+);
 
 const AppNavigator = createStackNavigator(
   {
@@ -86,7 +106,7 @@ const AppNavigator = createStackNavigator(
     Login: { screen: Login },
   },
   {
-    // headerMode: 'none',
+    headerMode: 'none',
     mode: 'modal',
     navigationOptions: {
       gesturesEnabled: false,
